@@ -29,7 +29,7 @@ def send_data(ip, port, variable):
 #%% MAIN
 if __name__ == "__main__":
     # define the ip and port
-    ip = "127.0.1.1"
+    ip = "62.163.195.37"
     port = 12345
     # start a loop and send the number I press to the server
 
@@ -66,7 +66,7 @@ if __name__ == "__main__":
                     time.sleep(1)
         except:
             pass
-
+#%%
 import requests
 
 def get_external_ip():
