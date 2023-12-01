@@ -1,9 +1,7 @@
-#%%
 import socket
-import time
 
 # Create a socket object
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 # Get local machine name and port
 host = socket.gethostname()
@@ -17,19 +15,16 @@ print(f"Port: {port}")
 ip_address = socket.gethostbyname(host)
 print(f"IPv4 Address: {ip_address}")
 
-#%% MAIN
+# Connect to the server
+client_socket.connect((host, port))
 
-if __name__ == "__main__":
-    # define the ip and port
-    computer1_ip = "25.42.216.73"   # Replace with the actual IP of computer1
-    computer1_port = 12345
+# Send data to server
+message_to_send = 'Hello, server! This is the client.'
+client_socket.send(message_to_send.encode())
 
-    # Start a while loop and print the data received every 10 seconds
-    while True:
-        # receive the data
-        data = server_socket.recv(1024)
+# Receive response from server
+data_received = client_socket.recv(1024)
+print('Received from server:', data_received.decode())
 
-        # wait for 3 seconds
-        time.sleep(3)
-        # print the data
-        print(data)
+# Close the connection
+client_socket.close()
