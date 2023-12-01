@@ -64,3 +64,18 @@ if __name__ == "__main__":
                     time.sleep(1)
         except:
             pass
+
+import requests
+
+def get_external_ip():
+    try:
+        response = requests.get('https://api.ipify.org')
+        if response.status_code == 200:
+            return response.text
+        else:
+            return "Unable to retrieve IP address"
+    except requests.RequestException as e:
+        return f"Error: {e}"
+
+external_ip = get_external_ip()
+print(f"External IP Address: {external_ip}")
