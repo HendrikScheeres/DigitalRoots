@@ -39,7 +39,7 @@ def receive_data(ip, port):
 
 if __name__ == "__main__":
     # define the ip and port
-    ip = "62.163.195.37"
+    ip = "192.168.178"
     port = 12345
 
     # Start a while loop and print the data received every 10 seconds
