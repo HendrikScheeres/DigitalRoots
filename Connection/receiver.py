@@ -45,7 +45,7 @@ if __name__ == "__main__":
     # Start a while loop and print the data received every 10 seconds
     while True:
         # receive the data
-        data = receive_data(ip, port)
+        data = receive_data(computer1_ip, computer1_port)
         # wait for 3 seconds
         time.sleep(3)
         # print the data
