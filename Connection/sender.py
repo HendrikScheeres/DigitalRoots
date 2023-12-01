@@ -3,6 +3,15 @@ import socket
 import keyboard
 import time
 import numpy as np
+#%%
+# Get the ip address of the computer
+import socket
+
+hostname = socket.gethostname()
+ip_address = socket.gethostbyname(hostname)
+
+print(f"Hostname: {hostname}")
+print(f"IPv4 Address: {ip_address}")
 
 #%% FUNCTIONS
 def send_data(ip, port, variable):
@@ -18,13 +27,13 @@ def send_data(ip, port, variable):
 #%% MAIN
 if __name__ == "__main__":
     # define the ip and port
-    ip = "192.168.178.1"
+    ip = "127.0.1.1"
     port = 12345
     # start a loop and send the number I press to the server
 
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
-        s.connect((ip, port))
+        s.connect((ip_address, port))
         try:
             while True:
                 # if a key is pressed, send the key to the server
