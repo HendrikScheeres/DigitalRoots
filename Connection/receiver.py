@@ -1,8 +1,17 @@
+#%%
+import sys
+print(sys.executable)
+
 #%% IMPORTS
 import socket
 import keyboard
 import time
 import numpy as np
+
+#%% GET THE IP ADDRESS
+
+# print the ip address
+print(socket.gethostbyname(socket.gethostname()))
 
 #%% FUNCTIONS
 def receive_data(ip, port):
@@ -31,7 +40,7 @@ def receive_data(ip, port):
 
 if __name__ == "__main__":
     # define the ip and port
-    ip = "192.168.178.1"
+    ip = "127.0.1.1"
     port = 12345
 
     # Start a while loop and print the data received every 10 seconds
