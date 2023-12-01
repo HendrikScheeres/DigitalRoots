@@ -1,3 +1,4 @@
+#%%
 import serial
 
 # Define the serial port and baud rate
