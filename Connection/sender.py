@@ -8,7 +8,7 @@ import numpy as np
 import socket
 
 hostname = socket.gethostname()
-ip_address = socket.gethostbyname(hostname)
+ip_address = "25.42.216.73" 
 
 print(f"Hostname: {hostname}")
 print(f"IPv4 Address: {ip_address}")
