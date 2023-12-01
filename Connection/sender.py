@@ -1,16 +1,57 @@
-#%%
-import serial
+#%% IMPORTS
+import socket
+import keyboard
 import time
+import numpy as np
 
-# Define the serial port and baud rate
-ser = serial.Serial('COM1', 9600)  # Change 'COM1' to the appropriate port on your system
+#%% FUNCTIONS
+def send_data(ip, port, variable):
+    # create a socket object
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    # connect to the server
+    s.connect((ip, port))
+    # send the input to the server
+    s.sendall(variable.encode())
+    # close the connection
+    s.close()
 
-# Wait for the serial connection to be established
-time.sleep(2)
+#%% MAIN
+if __name__ == "__main__":
+    # define the ip and port
+    ip = "192.168.178.1"
+    port = 12345
+    # start a loop and send the number I press to the server
 
-# Send data
-data_to_send = "Hello, Computer B!"
-ser.write(data_to_send.encode())  # Sending encoded data
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
 
-# Close the serial connection
-ser.close()
+        s.connect((ip, port))
+        try:
+            while True:
+                # if a key is pressed, send the key to the server
+                if keyboard.is_pressed('1'):
+                    # change the variable to '1'
+                    variable = '1'
+                    # send the input to the server
+                    s.sendall(variable.encode())
+                    # wait for 1 second
+                    time.sleep(1)
+                elif keyboard.is_pressed('2'):
+                    variable = '2'
+                    # send the input to the server
+                    s.sendall(variable.encode())
+                    # wait for 1 second
+                    time.sleep(1)
+                elif keyboard.is_pressed('3'):
+                    variable = '3'
+                    # send the input to the server
+                    s.sendall(variable.encode())
+                    # wait for 1 second
+                    time.sleep(1)
+                elif keyboard.is_pressed('4'):
+                    variable = '4'
+                    # send the input to the server
+                    s.sendall(variable.encode())
+                    # wait for 1 second
+                    time.sleep(1)
+        except:
+            pass
