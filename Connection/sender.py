@@ -14,3 +14,5 @@ print(f"Hostname: {hostname}")
 print(f"IPv4 Address: {ip_address}")
 
 # if the ip_address is not 192.168.178.43 then change your computer ip address to this number
+
+# %%
