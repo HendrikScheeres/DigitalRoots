@@ -1,15 +1,19 @@
-#%% IMPORTS
+#%%
 import socket
-import keyboard
-import time
-import numpy as np
-import subprocess
 
-#%% GET THE IP ADDRESS
-hostname = socket.gethostname()
-ip_address = socket.gethostbyname(hostname)
+# Create a socket object
+server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-print(f"Hostname: {hostname}")
+# Get local machine name and port
+host = socket.gethostname()
+port = 12345
+
+# print the host and port
+print(f"Hostname: {host}")
+print(f"Port: {port}")
+
+# The IPv4 address of the computer
+ip_address = socket.gethostbyname(host)
 print(f"IPv4 Address: {ip_address}")
 
 #%% FUNCTIONS
