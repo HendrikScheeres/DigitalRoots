@@ -18,13 +18,42 @@ print(f"IPv4 Address: {ip_address}")
 # Connect to the server
 client_socket.connect((host, port))
 
+#%% Connect to the serve
 # Send data to server
-message_to_send = 'Hello, server! This is the client.'
+message_to_send = "Connected"
 client_socket.send(message_to_send.encode())
 
 # Receive response from server
 data_received = client_socket.recv(1024)
-print('Received from server:', data_received.decode())
+if data_received.decode() == "Connected":
+    print("Client connected successfully")
+else:
+    print("Client connection failed")
 
-# Close the connection
-client_socket.close()
+#%%
+# While true loop to receive data until client presses "q"
+while True:
+    # Receive data from server
+    data_received = client_socket.recv(1024)
+
+    # if q is pressed, break the loop and close the connection
+    if data_received.decode() == "q":
+        print("Server disconnected")
+        break
+    else:
+        print("Message received from server:", data_received.decode())
+
+    # print the message received from the server
+    print("Message received from server:", data_received.decode())
+    
+    # Send data to server
+    message_to_send = "Hello from client"
+    client_socket.send(message_to_send.encode())
+    print("Message sent to server")
+
+    # if q is pressed, break the loop and close the connection
+    if message_to_send == "q":
+        break
+
+#%% Close the connection
+client_socket.close() 

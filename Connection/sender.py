@@ -1,6 +1,7 @@
 #%%
 import socket
 import time
+import keyboard
 
 # Create a socket object
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -17,7 +18,7 @@ print(f"Port: {port}")
 ip_address = socket.gethostbyname(host)
 print(f"IPv4 Address: {ip_address}")
 
-#%%
+#%% Connect to the server
 
 # Bind to the port
 server_socket.bind((host, port))
@@ -33,11 +34,65 @@ print('Got connection from', addr)
 
 # Receive data from client
 data_received = client_socket.recv(1024)
-print('Received:', data_received.decode())
+if data_received.decode() == "Connected":
+    print("Client connected successfully")
+else:
+    print("Client connection failed")   
 
 # Send a response to client
-message_to_send = 'Hello, client! Thanks for connecting.'
+message_to_send = "Connected"
 client_socket.send(message_to_send.encode())
 
-# Close the connection
+#%%
+# While true loop to send data until client presses "q"
+while True:
+
+    message_to_send = "Hello from server"
+    client_socket.send(message_to_send.encode())
+    print("Message sent to client")
+    time.sleep(1)
+
+    # if the user presses 0, send 0 to the client
+    if keyboard.is_pressed('0'):
+        message_to_send = "0"
+        client_socket.send(message_to_send.encode())
+        print("Message sent to client")
+        time.sleep(1)
+
+        # if the user presses 0, send 0 to the client
+    elif keyboard.is_pressed('1'):
+        message_to_send = "1"
+        client_socket.send(message_to_send.encode())
+        print("Message sent to client")
+        time.sleep(1)
+    
+    # if the user presses 2, send 2 to the client
+    elif keyboard.is_pressed('2'):
+        message_to_send = "2"
+        client_socket.send(message_to_send.encode())
+        print("Message sent to client")
+        time.sleep(1)
+
+    # if the user presses 3, send 3 to the client
+    elif keyboard.is_pressed('3'):
+        message_to_send = "3"
+        client_socket.send(message_to_send.encode())
+        print("Message sent to client")
+        time.sleep(1)
+
+    # Receive data from client
+    data_received = client_socket.recv(1024)
+
+    if data_received.decode() == "q":
+        print("Client disconnected")
+        break
+    else:
+        print("Message received from client:", data_received.decode())
+
+    # if q is pressed, break the loop and close the connection
+    if keyboard.is_pressed('q'):
+        print("Server disconnected")
+        break
+
+#%% Close the connection
 client_socket.close()
