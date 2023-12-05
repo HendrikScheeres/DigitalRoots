@@ -15,9 +15,6 @@ print(f"Port: {port}")
 ip_address = socket.gethostbyname(host)
 print(f"IPv4 Address: {ip_address}")
 
-# Connect to the server
-client_socket.connect((host, port))
-
 sender_ip_address = "192.168.178.43"
 
 #%%
