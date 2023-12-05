@@ -40,24 +40,28 @@ while True:
 
     # ONE
     if keyboard.is_pressed("1"):
+        print("1 pressed")
         client_socket.send("1".encode())
 
     # TWO
     elif keyboard.is_pressed("2"):
+        print("2 pressed")
         client_socket.send("2".encode())
 
     # THREE
     elif keyboard.is_pressed("3"):
+        print("3 pressed")
         client_socket.send("3".encode())
 
     # FOUR
     elif keyboard.is_pressed("4"):
+        print("4 pressed")
         client_socket.send("4".encode())
 
     # if the client side return q quit the connection
     received_message = client_socket.recv(1024).decode()
     print(received_message)
-    
+
     if received_message == "q":
         print("Connection closed by the client.")
         break
