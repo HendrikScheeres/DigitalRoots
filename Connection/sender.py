@@ -54,6 +54,11 @@ while True:
 
     print(f"Received from client: {data}")
 
+    # if data equals q close the connection
+    if data == 'q':
+        print("Closing connection from receiver end.")
+        break
+
 # Close the connection
 client_socket.close()
 

@@ -74,12 +74,6 @@ while True:
         # send a reply to the server that 4 was received and action was performed
         client_socket.send('4 was received'.encode())
 
-    # check for messages from arduino
-    arduino_data = arduino_serial.readline().decode().strip()
-    if arduino_data:
-        print(f"Received from Arduino: {arduino_data}")
-        client_socket.send(arduino_data.encode())
-
     elif data == 'q':
 
         # send a message to the server that the client is closing the connection
@@ -88,6 +82,14 @@ while True:
         # Close the connection
         client_socket.close()
         break
+
+    # check for messages from arduino
+    arduino_data = arduino_serial.readline().decode().strip()
+    if arduino_data:
+        print(f"Received from Arduino: {arduino_data}")
+        client_socket.send(arduino_data.encode())
+
+  
 
 # Close the connection
 client_socket.close()
