@@ -40,7 +40,7 @@ while True:
 
     if key_pressed == 'q':
         # send a message to the client that the server is closing the connection
-        client_socket.send('q'.encode())
+        client_socket.send('Closing connection from sender end'.encode())
         break
 
     # Map keys to messages and send to the client

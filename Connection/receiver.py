@@ -81,6 +81,10 @@ while True:
         client_socket.send(arduino_data.encode())
 
     elif data == 'q':
+
+        # send a message to the server that the client is closing the connection
+        client_socket.send('Closing connection from receiver end'.encode())
+        
         # Close the connection
         client_socket.close()
         break
