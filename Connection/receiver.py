@@ -34,6 +34,9 @@ while True:
 
         # close the connection
         client_socket.close()
+
+        while keyboard.is_pressed("q"):
+            pass
         break
 
     # Listen if the server sends a message

@@ -36,6 +36,9 @@ while True:
     if keyboard.is_pressed("q"):
         # close the connection
         client_socket.close()
+        while keyboard.is_pressed("q"):
+            pass
+
         break
 
     # ONE
@@ -43,20 +46,32 @@ while True:
         print("1 pressed")
         client_socket.send("1".encode())
 
+        while keyboard.is_pressed("1"):
+            pass
+
     # TWO
     elif keyboard.is_pressed("2"):
         print("2 pressed")
         client_socket.send("2".encode())
+
+        while keyboard.is_pressed("2"):
+            pass
 
     # THREE
     elif keyboard.is_pressed("3"):
         print("3 pressed")
         client_socket.send("3".encode())
 
+        while keyboard.is_pressed("3"):
+            pass
+
     # FOUR
     elif keyboard.is_pressed("4"):
         print("4 pressed")
         client_socket.send("4".encode())
+
+        while keyboard.is_pressed("4"):
+            pass
 
     # if the client side return q quit the connection
     received_message = client_socket.recv(1024).decode()
