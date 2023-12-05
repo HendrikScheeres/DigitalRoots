@@ -26,7 +26,7 @@ else:
 # Keep the connection open (while loop) untill the user presses 'q'
 while True:
 
-    print('Receiving...')
+    print('Receiving....')
 
     # Quit
     if keyboard.is_pressed("q"):
