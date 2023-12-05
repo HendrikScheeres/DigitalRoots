@@ -37,6 +37,16 @@ while True:
         print("Message 1 received, performing action...")
         # Perform action for message 1
 
+        # send a reply to the server that 1 was received and action was performed
+        client_socket.send('1 was received'.encode())
+
+    elif data == '2':
+        print("Message 2 received, performing action...")
+        # Perform action for message 2
+
+        # send a reply to the server that 2 was received and action was performed
+        client_socket.send('2 was received'.encode())
+
 # Close the connection
 client_socket.close()
 
