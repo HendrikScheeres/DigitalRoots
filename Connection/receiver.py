@@ -1,3 +1,4 @@
+#%%
 import socket
 
 # Create a socket object

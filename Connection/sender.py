@@ -1,3 +1,4 @@
+#%%
 import socket
 
 # Create a socket object
@@ -32,3 +33,5 @@ while True:
 
 # Close the connection
 client_socket.close()
+
+# %%
