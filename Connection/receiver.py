@@ -26,7 +26,7 @@ if received_message == "Test":
 else:
     print("Test message not received.")
 
-#%% print all possible com ports
+#% print all possible com ports
 ports = serial.tools.list_ports.comports()
 for port, desc, hwid in sorted(ports):
     print("{}: {} [{}]".format(port, desc, hwid))
@@ -37,7 +37,6 @@ arduino_serial = serial.Serial('COM3', 9600, timeout=1)
 # Wait 2 seconds for the communication to get established
 time.sleep(2)
 
-#%%
 while True:
     # Receive data from the server
     data = client_socket.recv(1024).decode()
