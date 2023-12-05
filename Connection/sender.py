@@ -2,6 +2,12 @@
 import socket
 import keyboard
 
+def get_key():
+    while True:
+        key = keyboard.read_event()
+        if key.event_type == keyboard.KEY_DOWN:
+            return key.name
+
 # Create a socket object
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -29,55 +35,19 @@ received_message = client_socket.recv(1024).decode()
 print(f"Sent: {message}")
 print(f"Received: {received_message}")
 
-# Keep the connection open (while loop) untill the user presses 'q'
 while True:
+    key_pressed = get_key()
 
-    # QUIT
-    if keyboard.is_pressed("q"):
-        # close the connection
-        client_socket.close()
-        while keyboard.is_pressed("q"):
-            pass
+    # Map keys to messages and send to the client
+    if key_pressed in ['1', '2', '3', '4']:
+        client_socket.send(key_pressed.encode())
 
+    # Receive data from the client
+    data = client_socket.recv(1024).decode()
+    if not data:
         break
 
-    # ONE
-    if keyboard.is_pressed("1"):
-        print("1 pressed")
-        client_socket.send("1".encode())
+    print(f"Received from client: {data}")
 
-        while keyboard.is_pressed("1"):
-            pass
-
-    # TWO
-    elif keyboard.is_pressed("2"):
-        print("2 pressed")
-        client_socket.send("2".encode())
-
-        while keyboard.is_pressed("2"):
-            pass
-
-    # THREE
-    elif keyboard.is_pressed("3"):
-        print("3 pressed")
-        client_socket.send("3".encode())
-
-        while keyboard.is_pressed("3"):
-            pass
-
-    # FOUR
-    elif keyboard.is_pressed("4"):
-        print("4 pressed")
-        client_socket.send("4".encode())
-
-        while keyboard.is_pressed("4"):
-            pass
-
-    # if the client side return q quit the connection
-    received_message = client_socket.recv(1024).decode()
-    print(received_message)
-
-    if received_message == "q":
-        print("Connection closed by the client.")
-        break
-# %%
+# Close the connection
+client_socket.close()

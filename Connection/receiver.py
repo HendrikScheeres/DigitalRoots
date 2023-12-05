@@ -23,33 +23,21 @@ if received_message == "Test":
 else:
     print("Test message not received.")
 
-# Keep the connection open (while loop) untill the user presses 'q'
 while True:
-
-    print('Receiving....')
-
-    # Quit
-    if keyboard.is_pressed("q"):
-        client_socket.send("q".encode())
-
-        # close the connection
-        client_socket.close()
-
-        while keyboard.is_pressed("q"):
-            pass
+    # Receive data from the server
+    data = client_socket.recv(1024).decode()
+    
+    if not data:
         break
 
-    # Listen if the server sends a message
-    received_message = client_socket.recv(1024).decode()
+    print(f"Received from server: {data}")
 
-    print(received_message)
+    # React based on received message
+    if data == '1':
+        print("Message 1 received, performing action...")
+        # Perform action for message 1
 
-    # if a message is sent, print it
-    if received_message:
-        print(f"Received: {received_message}")
-
-        if received_message == "q":
-            print("Connection closed by the server.")
-            break
+# Close the connection
+client_socket.close()
 
 # %%
