@@ -1,44 +1,34 @@
-#%%
 import socket
 
 # Create a socket object
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-# Get the local machine name and specify a port
-host = socket.gethostname()
-port = 12345
+# Get the server's IP address and port number
+server_ip = '192.168.178.43'  # Change this to the server's IP
+server_port = 5555  # Choose a port number
 
-# Nicely print the host, port and ip address
-print(f"Host: {host}")
-print(f"Port: {port}")
-print(f"IP Address: {socket.gethostbyname(host)}")
+# Bind the socket to the IP address and port
+server_socket.bind((server_ip, server_port))
 
-#%%
+# Listen for incoming connections (max 1)
+server_socket.listen(1)
+print("Server is listening...")
 
-# Bind the socket to the host and port
-server_socket.bind((host, port))
-
-# Listen for incoming connections
-server_socket.listen(5)
-
-print("Server listening...")
-
-# Accept incoming connections
-client_socket, addr = server_socket.accept()
-print(f"Connection from {addr} established.")
+# Accept a connection
+client_socket, client_address = server_socket.accept()
+print(f"Connection from {client_address} established.")
 
 while True:
     # Receive data from the client
     data = client_socket.recv(1024).decode()
     if not data:
         break
+
     print(f"Received from client: {data}")
 
-    # Send a response back to the client
-    response = input("Enter your response: ")
-    client_socket.send(response.encode())
+    # Send data back to the client
+    message = input("Enter message to send: ")
+    client_socket.send(message.encode())
 
 # Close the connection
 client_socket.close()
-
-# %%
