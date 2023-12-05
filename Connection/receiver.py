@@ -26,6 +26,8 @@ else:
 # Keep the connection open (while loop) untill the user presses 'q'
 while True:
 
+    print('Receiving...')
+
     # Quit
     if keyboard.is_pressed("q"):
         client_socket.send("q".encode())
