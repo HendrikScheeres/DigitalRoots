@@ -28,15 +28,22 @@ while True:
 
     # Quit
     if keyboard.is_pressed("q"):
+        client_socket.send("q".encode())
+
         # close the connection
         client_socket.close()
         break
 
     # Listen if the server sends a message
     received_message = client_socket.recv(1024).decode()
+    print(received_message)
 
     # if a message is sent, print it
     if received_message:
         print(f"Received: {received_message}")
+
+        if received_message == "q":
+            print("Connection closed by the server.")
+            break
 
 # %%
