@@ -16,32 +16,42 @@ print(f"Port: {port}")
 
 # The IPv4 address of the computer
 ip_address = socket.gethostbyname(host)
-print(f"IPv4 Address: {ip_address}")
+print(f"Sender IPv4 Address: {ip_address}")
+
+# Receiver IPv4 Address
+receiver_ip_address = "192.168.178.227"
 
 #%% Connect to the server
 
-# Bind to the port
-server_socket.bind((host, port))
+# Connect to the server
+server_socket.connect((receiver_ip_address, port))
 
-# Listen for incoming connections
-server_socket.listen(5)
-
-print('Waiting for incoming connections...')
-
-# Establish connection with client
-client_socket, addr = server_socket.accept()
-print('Got connection from', addr)
-
-# Receive data from client
-data_received = client_socket.recv(1024)
-if data_received.decode() == "Connected":
-    print("Client connected successfully")
-else:
-    print("Client connection failed")   
-
-# Send a response to client
+# Send data to server
 message_to_send = "Connected"
-client_socket.send(message_to_send.encode())
+server_socket.send(message_to_send.encode())
+
+# # Bind to the port
+# server_socket.bind((host, port))
+
+# # Listen for incoming connections
+# server_socket.listen(5)
+
+# print('Waiting for incoming connections...')
+
+# # Establish connection with client
+# client_socket, addr = server_socket.accept()
+# print('Got connection from', addr)
+
+# # Receive data from client
+# data_received = client_socket.recv(1024)
+# if data_received.decode() == "Connected":
+#     print("Client connected successfully")
+# else:
+#     print("Client connection failed")   
+
+# # Send a response to client
+# message_to_send = "Connected"
+# client_socket.send(message_to_send.encode())
 
 #%%
 # While true loop to send data until client presses "q"

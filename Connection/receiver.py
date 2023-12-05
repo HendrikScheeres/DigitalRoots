@@ -18,42 +18,60 @@ print(f"IPv4 Address: {ip_address}")
 # Connect to the server
 client_socket.connect((host, port))
 
-#%% Connect to the serve
-# Send data to server
-message_to_send = "Connected"
-client_socket.send(message_to_send.encode())
-
-# Receive response from server
-data_received = client_socket.recv(1024)
-if data_received.decode() == "Connected":
-    print("Client connected successfully")
-else:
-    print("Client connection failed")
+sender_ip_address = "192.168.178.43"
 
 #%%
-# While true loop to receive data until client presses "q"
-while True:
-    # Receive data from server
-    data_received = client_socket.recv(1024)
+# Listen for incoming connections
+client_socket.listen(5)
 
-    # if q is pressed, break the loop and close the connection
-    if data_received.decode() == "q":
-        print("Server disconnected")
-        break
-    else:
-        print("Message received from server:", data_received.decode())
+print('Waiting for incoming connections...')
 
-    # print the message received from the server
-    print("Message received from server:", data_received.decode())
+# Establish connection with client
+client_socket, addr = client_socket.accept()
+print('Got connection from', addr)
+
+# Receive data from client
+data_received = client_socket.recv(1024)
+
+# print the message received from the client
+print("Message received from client:", data_received.decode())
+
+#%% Connect to the serve
+# Send data to server
+# message_to_send = "Connected"
+# client_socket.send(message_to_send.encode())
+
+# # Receive response from server
+# data_received = client_socket.recv(1024)
+# if data_received.decode() == "Connected":
+#     print("Client connected successfully")
+# else:
+#     print("Client connection failed")
+
+#%%
+# # While true loop to receive data until client presses "q"
+# while True:
+#     # Receive data from server
+#     data_received = client_socket.recv(1024)
+
+#     # if q is pressed, break the loop and close the connection
+#     if data_received.decode() == "q":
+#         print("Server disconnected")
+#         break
+#     else:
+#         print("Message received from server:", data_received.decode())
+
+#     # print the message received from the server
+#     print("Message received from server:", data_received.decode())
     
-    # Send data to server
-    message_to_send = "Hello from client"
-    client_socket.send(message_to_send.encode())
-    print("Message sent to server")
+#     # Send data to server
+#     message_to_send = "Hello from client"
+#     client_socket.send(message_to_send.encode())
+#     print("Message sent to server")
 
-    # if q is pressed, break the loop and close the connection
-    if message_to_send == "q":
-        break
+#     # if q is pressed, break the loop and close the connection
+#     if message_to_send == "q":
+#         break
 
-#%% Close the connection
-client_socket.close() 
+# #%% Close the connection
+# client_socket.close() 
