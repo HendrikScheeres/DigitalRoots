@@ -36,6 +36,7 @@ while True:
 
     # Listen if the server sends a message
     received_message = client_socket.recv(1024).decode()
+
     print(received_message)
 
     # if a message is sent, print it
