@@ -1,5 +1,6 @@
 #%%
 import socket
+import keyboard
 
 # Create a socket object
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -19,17 +20,37 @@ print("Server is listening...")
 client_socket, client_address = server_socket.accept()
 print(f"Connection from {client_address} established.")
 
+# Test the connection by sending a message
+message = "Test"
+client_socket.send(message.encode())
+
+# Check if the message was received correctly (compare the sent and received messages)
+received_message = client_socket.recv(1024).decode()
+print(f"Sent: {message}")
+print(f"Received: {received_message}")
+
+# Keep the connection open (while loop) untill the user presses 'q'
 while True:
-    # Receive data from the client
-    data = client_socket.recv(1024).decode()
-    if not data:
+
+    # QUIT
+    if keyboard.is_pressed("q"):
+        # close the connection
+        client_socket.close()
         break
+    # ONE
+    if keyboard.is_pressed("1"):
+        client_socket.send("1".encode())
 
-    print(f"Received from client: {data}")
+    # TWO
+    elif keyboard.is_pressed("2"):
+        client_socket.send("2".encode())
 
-    # Send data back to the client
-    message = input("Enter message to send: ")
-    client_socket.send(message.encode())
+    # THREE
+    elif keyboard.is_pressed("3"):
+        client_socket.send("3".encode())
 
-# Close the connection
-client_socket.close()
+    # FOUR
+    elif keyboard.is_pressed("4"):
+        client_socket.send("4".encode())
+
+# %%
