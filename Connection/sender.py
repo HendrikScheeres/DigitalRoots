@@ -38,6 +38,11 @@ print(f"Received: {received_message}")
 while True:
     key_pressed = get_key()
 
+    if key_pressed == 'q':
+        # send a message to the client that the server is closing the connection
+        client_socket.send('q'.encode())
+        break
+
     # Map keys to messages and send to the client
     if key_pressed in ['1', '2', '3', '4']:
         client_socket.send(key_pressed.encode())
@@ -51,3 +56,5 @@ while True:
 
 # Close the connection
 client_socket.close()
+
+# %%
