@@ -18,7 +18,6 @@ print(f"IPv4 Address: {ip_address}")
 
 sender_ip_address = "192.168.178.43"
 
-#%%
 # Listen for incoming connections
 client_socket.listen(5)
 
