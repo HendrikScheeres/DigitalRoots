@@ -8,6 +8,13 @@ server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = socket.gethostname()
 port = 12345
 
+# Nicely print the host, port and ip address
+print(f"Host: {host}")
+print(f"Port: {port}")
+print(f"IP Address: {socket.gethostbyname(host)}")
+
+#%%
+
 # Bind the socket to the host and port
 server_socket.bind((host, port))
 
