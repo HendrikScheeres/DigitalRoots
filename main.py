@@ -55,14 +55,14 @@ def main():
     # MIN-MAX normalization 
     # measure 10 seconds of data and get the min and max voltage
     start_time = time.time()
-    print("scaling the signal, 5 seconds")
+    print("scaling the signal, 10 seconds")
 
     # get the max and min voltage
     max_voltage = 0
     min_voltage = 500
 
     # print the max and min of Voltage3
-    while (time.time() - start_time) < 5:
+    while (time.time() - start_time) < 10:
         
         # if the timer has passed a second, print the max and min voltage
         if (time.time() - start_time) > 1:
@@ -83,6 +83,13 @@ def main():
     print("max voltage: ", max_voltage)
     print("min voltage: ", min_voltage)
     print("Done with scaling")
+
+    # Import the scaling parameters from the training (Weights/scaling_values.npz)
+    # load the scaling values
+    scaling_values = np.load('weights/scaling_values.npz')
+    print("scaling values in training")
+    print("min voltage: ", scaling_values["min"])
+    print("max voltage: ", scaling_values["max"])
 
     # Z-score normalization
     # while (time.time() - start_time) < 5:
@@ -129,6 +136,9 @@ def main():
                     # get the class label
                     class_label = np.argmax(output_average)
 
+                    # convert the class label to a string
+                    class_label = str(class_label)
+
                     # send the class label
                     print(class_label)
 
@@ -145,6 +155,8 @@ def main():
                         send_data(client_socket, class_label)
 
                         plantStatus = "Resting"
+
+                        print("going into rest mode")
 
             #KEYPRESSES
             # if i press 'p' on the keyboard, plot the data
@@ -185,18 +197,26 @@ def main():
             # wait for 4 seconds
             time.sleep(15)
 
-            # listen untill you receive data back from the client
-            while True:
-                # receive the data
-                data = client_socket.recv(1024)
-                data = data.decode("utf-8")
+            # if i press 'q' on the keyboard, quit the program
+            if keyboard.is_pressed('q'):
+                print("quitting")
+                break
 
-                # if the data is not empty, print it and break the loop
-                if data:
-                    print(data)
-                    print("It is now listening again")
-                    plantStatus = "Listening"
-                    break        
+            print("plant is set to listening again")
+            plantStatus = "Listening"
+
+            # # listen untill you receive data back from the client
+            # while True:
+            #     # receive the data
+            #     data = client_socket.recv(1024)
+            #     data = data.decode("utf-8")
+
+            #     # if the data is not empty, print it and break the loop
+            #     if data:
+            #         print(data)
+            #         print("It is now listening again")
+            #         plantStatus = "Listening"
+            #         break        
                     
                 
             

@@ -237,6 +237,10 @@ plt.figure()
 plt.plot(data_norm_M[0, 0, :])
 plt.title("min-max scaling")
 
+#%%
+# save the min and max values with which the data was scaled
+np.savez("scaling_values.npz", min=np.min(data), max=np.max(data))
+
 #%% PREPARE FOR TRAINGING
 
 data = data_norm_Z #FIX THIS!
