@@ -15,6 +15,9 @@ style.use('fivethirtyeight')
 # Initialize all variables
 ErrorCounter = 0
 
+# set the voltage array to global
+Voltage3 = []
+
 # List the serial ports:
 ports = serial.tools.list_ports.comports()
 serialInst = serial.Serial()
@@ -95,6 +98,10 @@ def serialEvent():
             yValue = (yMSB << 8) | yLSB
 
             switch_command(Command)
+
+            # return the Voltage array
+            return Voltage3
+        
             
 # Define switch_command function
 def switch_command(Command):

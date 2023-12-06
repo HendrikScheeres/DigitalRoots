@@ -54,7 +54,7 @@ def main():
 
     # open the serial port and start measuring
     while True:
-        serialEvent()
+        Voltage3 = serialEvent()
 
         # if i press 'p' on the keyboard, plot the data
         if keyboard.is_pressed('p'):
@@ -68,7 +68,9 @@ def main():
         # if i press 's' on the keyboard, save the data array and target array    
         if keyboard.is_pressed('s'):
             print("saving data")
-            np.savez('data', data=data_array, target=target_array)
+            foldername="Data/"
+            filename="data"
+            np.savez(foldername+filename, data=data_array, target=target_array)
             print("saved data")
             print("Data was saved! Press q to quit")
 
@@ -78,8 +80,7 @@ def main():
             plot_data()
 
             for i in range(save_rate):
-                # shorten the time and voltage arrays to 150
-                TimeSave = Time3[:150]
+                # shorten the time and voltage arrays to 150p1
                 VoltageSave = Voltage3[:150]
                 
                 # add the data and target to the arrays and increment
@@ -90,7 +91,7 @@ def main():
                 #  if save seperately is on
                 if save_seperately:
                     # save the time and voltage arrays to a file
-                    np.savez("1/"+ str(gest1_index), target= 1, time=TimeSave, voltage=VoltageSave)
+                    np.savez("Data/seperateSave/1/"+ str(gest1_index), target= 1, voltage=VoltageSave)
                     gest1_index += 1
 
                 # wait
