@@ -1,3 +1,10 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import style
+import random
+import os
+style.use('fivethirtyeight')
+
 
 def load_weights(): 
 

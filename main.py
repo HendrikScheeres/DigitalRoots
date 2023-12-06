@@ -9,7 +9,8 @@ import serial.tools.list_ports
 import matplotlib.pyplot as plt
 from matplotlib import style
 
-from capacitiveSensor import serialEvent, Voltage3, Time3, test_connection, send_data, load_weights, transformer, plot_data
+from capacitiveSensor import serialEvent, Voltage3, Time3, test_connection, send_data, plot_data
+from transformer import transformer, load_weights
 
 data_dir = 'data/'
 
@@ -73,16 +74,16 @@ def main():
     print("max voltage calculated in training: " + str(max_voltage))
 
     # test the connection
-    test_connection('Test', 12345)   
+    #test_connection('Test', 12345)   
 
     # load the weights
-    w_i_h, w_h_o, b_i_h, b_h_o = load_weights()
+    #w_i_h, w_h_o, b_i_h, b_h_o = load_weights()
     output = np.zeros((4, 1))
 
     # transform the data
     voltage_copy = np.array(Voltage3)
     voltage_copy = (voltage_copy - min_voltage) / (max_voltage - min_voltage)
-    output = transformer(voltage_copy, w_i_h, w_h_o, b_i_h, b_h_o)
+    #output = transformer(voltage_copy, w_i_h, w_h_o, b_i_h, b_h_o)
     plot_data()
 
     # make the socket connection -> see test_connection script
@@ -211,24 +212,24 @@ def main():
             plot_data()
 
         # every 1000 samples translate the signal
-        if transform_every == 100:
-            print("transforming input")
-            # make an array copy of voltage3
-            voltage_copy = np.array(Voltage3)
-            voltage_copy = (voltage_copy - min_voltage) / (max_voltage - min_voltage)
-            output = transformer(voltage_copy, w_i_h, w_h_o, b_i_h, b_h_o)
-            transform_every = 0
+        # if transform_every == 100:
+        #     print("transforming input")
+        #     # make an array copy of voltage3
+        #     voltage_copy = np.array(Voltage3)
+        #     voltage_copy = (voltage_copy - min_voltage) / (max_voltage - min_voltage)
+        #     output = transformer(voltage_copy, w_i_h, w_h_o, b_i_h, b_h_o)
+        #     transform_every = 0
 
-            # print the output
-            print("output: ")
-            print(output)
+        #     # print the output
+        #     print("output: ")
+        #     print(output)
 
             # send the data to the server
             #send_data('145.137.73.169',12345, output)
         
 
         # increment the transform_every
-        transform_every += 1
+        # transform_every += 1
         
 
 
