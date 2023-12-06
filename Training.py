@@ -18,29 +18,38 @@ style.use('fivethirtyeight')
 
 #%%
 # Presets
-np.random.seed(42)
-epochs = 100  # Set your desired number of epochs
-learn_rate = 0.1  # Set your learning rate
-train = "all" # "raw", "z-score", "min-max", "all
+train = "raw"
+epochs = 30
+learn_rate = 0.01
+
 
 #%% FUNCTIONS
 def train_network(epochs, train_data, train_target, learn_rate):
-    input_neurons = train_data.shape[2]
-    hidden_neurons = 4  # Set your desired number of hidden neurons
-    output_neurons = train_target.shape[2]
+    #input_neurons = train_data.shape[2]
+    #hidden_neurons = 10  # Set your desired number of hidden neurons
+    #output_neurons = train_target.shape[2]
 
     # Initialize weights and biases
-    w_i_h = np.random.randn(hidden_neurons, input_neurons)
-    b_i_h = np.random.randn(hidden_neurons, 1)
-    w_h_o = np.random.randn(output_neurons, hidden_neurons)
-    b_h_o = np.random.randn(output_neurons, 1)
+    w_i_h = np.random.uniform(-0.5, 0.5, (20, 150))# specify dtype
+    w_h_o = np.random.uniform(-0.5, 0.5, (4, 20)) # specify dtype
 
+    b_i_h = np.zeros((20, 1)) # specify dtype
+    b_h_o = np.zeros((4, 1)) # specify dtype]
+    nr_correct = 0
     for epoch in range(epochs):
-        nr_correct = 0
+        
         for v, l in zip(train_data, train_target):
-            v = v.reshape(-1, 1) # Reshape v to be a column vector
-            l = l.reshape(-1, 1)  # Reshape l to be a column vector
+            #v = v.reshape(-1, 1) # Reshape v to be a column vector
+            #l = l.reshape(-1, 1)  # Reshape l to be a column vector
+            print(v.shape)
+            print(l.shape)
+            # transpose the input vector
+            v = v.T
+            l = l.T
+            print(v.shape)
+            print(l.shape)
 
+            break
             # Forward propagation
             h_pre = b_i_h + w_i_h @ v
             h = 1 / (1 + np.exp(-h_pre))
@@ -48,29 +57,35 @@ def train_network(epochs, train_data, train_target, learn_rate):
             o = 1 / (1 + np.exp(-o_pre))
 
             # Cost error calculation
-            e = 1 / len(train_data) * np.sum((o - l) ** 2)
+            e = 1/ len(0 * np.sum((o-l) ** 2, axis=0))
 
             nr_correct += int(np.argmax(o) == np.argmax(l))
 
             # Backpropagation
             delta_o = o - l
-            w_h_o -= learn_rate * delta_o @ h.T
-            b_h_o -= learn_rate * delta_o
+            w_h_o += - learn_rate * delta_o @ h.T
+            b_h_o += - learn_rate * delta_o
 
             delta_h = (w_h_o.T @ delta_o) * h * (1 - h)
-            w_i_h -= learn_rate * delta_h @ v.T
-            b_i_h -= learn_rate * delta_h
+            w_i_h += - learn_rate * delta_h @ v.T
+            b_i_h +=  -learn_rate * delta_h
 
         accuracy = nr_correct / len(train_data) * 100
         print(f'Epoch: {epoch+1}/{epochs}, Accuracy: {accuracy}%')
+        nr_correct = 0
 
     return w_i_h, b_i_h, w_h_o, b_h_o
 
 def test_network(test_data, test_target, w_i_h, b_i_h, w_h_o, b_h_o):
     nr_correct = 0
     for v, l in zip(test_data, test_target):
-        v = v.reshape(-1, 1) # Reshape v to be a column vector
-        l = l.reshape(-1, 1)  # Reshape l to be a column vector
+
+        # transpose the input vector
+        v = v.T
+        l = l.T
+
+        #v = v.reshape(-1, 1) # Reshape v to be a column vector
+        #l = l.reshape(-1, 1)  # Reshape l to be a column vector
 
         # Forward propagation
         h_pre = b_i_h + w_i_h @ v
@@ -224,6 +239,8 @@ plt.title("min-max scaling")
 
 #%% PREPARE FOR TRAINGING
 
+data = data_norm_Z #FIX THIS!
+
 # shuffle the data and the target arrays
 index = np.arange(data.shape[0])
 np.random.shuffle(index)
@@ -235,6 +252,12 @@ train_data = data[:int(0.8 * len(data)), :, :]
 train_target = target[:int(0.8 * len(target)), :, :]
 test_data = data[int(0.8 * len(data)):, :, :]
 test_target = target[int(0.8 * len(target)):, :, :]
+
+# print the sizes of the shuffle arrays
+print("Training data size: ", train_data.shape)
+print("Training target size: ", train_target.shape)
+print("Testing data size: ", test_data.shape)
+print("Testing target size: ", test_target.shape)
 
 #%% RAW
 
@@ -273,3 +296,4 @@ if train == "min-max" or train == "all":
 
     # save the weights
     np.savez("weights_min-max.npz", w_i_h=w_i_h, b_i_h=b_i_h, w_h_o=w_h_o, b_h_o=b_h_o)
+# %%

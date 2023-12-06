@@ -29,9 +29,9 @@ save_seperately = False
 def main():
 
     data_save_iter = 0 # this is the index of the data array
-    save_rate = 200 # this is the number of samples saved per keypress
+    save_rate = 500 # this is the number of samples saved per keypress
     max_n = 100000 # this is the maximum number of samples that can be saved
-    save_delay = 0.10 # this is the delay between each sample saved
+    save_delay = 0.05 # this is the delay between each sample saved
 
     # voltage and target arrays
     data_array = np.zeros((max_n, 1, 150))
@@ -45,7 +45,7 @@ def main():
 
     # run the serial event for 5 seconds to start up
     start_time = time.time()
-    print("starting serial event, 3 seconds startup")
+    print("starting serial event, 5 seconds startup")
     while (time.time() - start_time) < 5:
         serialEvent()
 
@@ -80,13 +80,15 @@ def main():
             plot_data()
 
             for i in range(save_rate):
-                # shorten the time and voltage arrays to 150p1
+                # shorten the time and voltage arrays to 150p
+                Voltage3 = serialEvent()
                 VoltageSave = Voltage3[:150]
                 
                 # add the data and target to the arrays and increment
                 data_array[data_save_iter, 0 , :] = VoltageSave
                 target_array[data_save_iter, 0 ,:] = [1, 0, 0, 0]
                 data_save_iter += 1
+                
 
                 #  if save seperately is on
                 if save_seperately:
@@ -104,18 +106,19 @@ def main():
 
             for i in range(save_rate):
                 # shorten the time and voltage arrays to 150
-                TimeSave = Time3[:150]
+                Voltage3 = serialEvent()
                 VoltageSave = Voltage3[:150]
 
                 # add the data and target to the arrays
                 data_array[data_save_iter, 0 , :] = VoltageSave
                 target_array[data_save_iter, 0 ,:] = [0, 1, 0, 0]
                 data_save_iter += 1
+                
 
                 # if save seperately is on
                 if save_seperately:
                     # save the time and voltage arrays to a file
-                    np.savez("2/"+ str(gest2_index), target= 2, time=TimeSave, voltage=VoltageSave)
+                    np.savez("2/"+ str(gest2_index), target= 2, voltage=VoltageSave)
                     gest2_index += 1
 
                 # wait 
@@ -129,18 +132,19 @@ def main():
 
             for i in range(save_rate):
                 # shorten the time and voltage arrays to 150
-                TimeSave = Time3[:150]
+                Voltage3 = serialEvent()
                 VoltageSave = Voltage3[:150]
 
                 # add the data and target to the arrays
                 data_array[data_save_iter, 0 , :] = VoltageSave
                 target_array[data_save_iter, 0 ,:] = [0, 0, 1, 0]
                 data_save_iter += 1
+                
 
                 # if save seperately is on
                 if save_seperately:
                     # save the time and voltage arrays to a file
-                    np.savez("3/"+ str(gest3_index), target= 3, time=TimeSave, voltage=VoltageSave)
+                    np.savez("3/"+ str(gest3_index), target= 3, voltage=VoltageSave)
                     gest3_index += 1
 
                 # wait
@@ -154,18 +158,19 @@ def main():
 
             for i in range(save_rate):
                 # shorten the time and voltage arrays to 150
-                TimeSave = Time3[:150]
+                Voltage3 = serialEvent()
                 VoltageSave = Voltage3[:150]
 
                 # add the data and target to the arrays
                 data_array[data_save_iter, 0 , :] = VoltageSave
                 target_array[data_save_iter, 0 ,:] = [0, 0, 0, 1]
                 data_save_iter += 1
+                
 
                 # if save seperately is on
                 if save_seperately:
                     # save the time and voltage arrays to a file
-                    np.savez("4/"+ str(gest4_index), target= 4, time=TimeSave, voltage=VoltageSave)
+                    np.savez("4/"+ str(gest4_index), target= 4, voltage=VoltageSave)
                     gest4_index += 1
 
                 # wait
