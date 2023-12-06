@@ -33,22 +33,24 @@ def main():
     # run the serial event for 10 seconds just to check if it works and to get the min and max voltage for normalization
     start_time = time.time()
 
+    # load the weights
+    w_i_h, w_h_o, b_i_h, b_h_o = load_weights()
+
     # There are two types of normalization 
     # 1. min-max normalization
     # 2. standardization
     # Make sure the weights are trained with the same normalization method as the input data
     # the min and max voltage are used for normalization
 
-    # load the weights
-    w_i_h, w_h_o, b_i_h, b_h_o = load_weights()
-
     print("starting serial event, 10 seconds of measurements")
     while (time.time() - start_time) < 10:
         serialEvent()
-        # save the minimum and maximum values of the voltage
-        if len(Voltage3) > 0:
-            min_voltage = min(Voltage3)
-            max_voltage = max(Voltage3)
+
+        # 3 seconds print something
+        if (time.time() - start_time) > 3 and (time.time() - start_time) < 3.1:
+            print("Touch near the electrode")
+
+
 
     while True:
         serialEvent()
@@ -67,7 +69,6 @@ def main():
 
             # make an array copy of voltage3
             voltage_copy = np.array(Voltage3)
-            voltage_copy = (voltage_copy - min_voltage) / (max_voltage - min_voltage)
             output = transformer(voltage_copy, w_i_h, w_h_o, b_i_h, b_h_o)
 
             # print the output

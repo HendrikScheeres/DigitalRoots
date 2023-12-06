@@ -16,6 +16,76 @@ from matplotlib import style
 import matplotlib.pyplot as plt
 style.use('fivethirtyeight')
 
+#%%
+# Presets
+np.random.seed(42)
+epochs = 100  # Set your desired number of epochs
+learn_rate = 0.1  # Set your learning rate
+train = "all" # "raw", "z-score", "min-max", "all
+
+#%% FUNCTIONS
+def train_network(epochs, train_data, train_target, learn_rate):
+    input_neurons = train_data.shape[2]
+    hidden_neurons = 4  # Set your desired number of hidden neurons
+    output_neurons = train_target.shape[2]
+
+    # Initialize weights and biases
+    w_i_h = np.random.randn(hidden_neurons, input_neurons)
+    b_i_h = np.random.randn(hidden_neurons, 1)
+    w_h_o = np.random.randn(output_neurons, hidden_neurons)
+    b_h_o = np.random.randn(output_neurons, 1)
+
+    for epoch in range(epochs):
+        nr_correct = 0
+        for v, l in zip(train_data, train_target):
+            v = v.reshape(-1, 1) # Reshape v to be a column vector
+            l = l.reshape(-1, 1)  # Reshape l to be a column vector
+
+            # Forward propagation
+            h_pre = b_i_h + w_i_h @ v
+            h = 1 / (1 + np.exp(-h_pre))
+            o_pre = b_h_o + w_h_o @ h
+            o = 1 / (1 + np.exp(-o_pre))
+
+            # Cost error calculation
+            e = 1 / len(train_data) * np.sum((o - l) ** 2)
+
+            nr_correct += int(np.argmax(o) == np.argmax(l))
+
+            # Backpropagation
+            delta_o = o - l
+            w_h_o -= learn_rate * delta_o @ h.T
+            b_h_o -= learn_rate * delta_o
+
+            delta_h = (w_h_o.T @ delta_o) * h * (1 - h)
+            w_i_h -= learn_rate * delta_h @ v.T
+            b_i_h -= learn_rate * delta_h
+
+        accuracy = nr_correct / len(train_data) * 100
+        print(f'Epoch: {epoch+1}/{epochs}, Accuracy: {accuracy}%')
+
+    return w_i_h, b_i_h, w_h_o, b_h_o
+
+def test_network(test_data, test_target, w_i_h, b_i_h, w_h_o, b_h_o):
+    nr_correct = 0
+    for v, l in zip(test_data, test_target):
+        v = v.reshape(-1, 1) # Reshape v to be a column vector
+        l = l.reshape(-1, 1)  # Reshape l to be a column vector
+
+        # Forward propagation
+        h_pre = b_i_h + w_i_h @ v
+        h = 1 / (1 + np.exp(-h_pre))
+        o_pre = b_h_o + w_h_o @ h
+        o = 1 / (1 + np.exp(-o_pre))
+
+        nr_correct += int(np.argmax(o) == np.argmax(l))
+
+    accuracy = nr_correct / len(test_data)
+    print(f'Correct predictions: {nr_correct}/{len(test_data)}')
+    print("Test Accuracy: ", accuracy)
+
+    return accuracy, w_i_h, b_i_h, w_h_o, b_h_o
+
 #%% LOAD
 # Choose the array to load
 folder = "Data/"
@@ -133,6 +203,7 @@ plt.legend(['1', '2', '3', '4'])
 #%% Normalizations
 
 # Before scale plot
+plt.figure()
 plt.plot(data[0, 0, :])
 plt.title("No scaling")
 
@@ -143,29 +214,15 @@ data_norm_Z = (data - np.mean(data)) / np.std(data)
 data_norm_M = (data - np.min(data)) / (np.max(data) - np.min(data))
 
 # After scale plot
+plt.figure()
 plt.plot(data_norm_Z[0, 0, :])
 plt.title("Z-score scaling")
 
+plt.figure()
 plt.plot(data_norm_M[0, 0, :])
 plt.title("min-max scaling")
 
 #%% PREPARE FOR TRAINGING
-
-# initialize the weights
-w_i_h = np.random.uniform(-0.5, 0.5, (20, 150)) 
-w_h_o = np.random.uniform(-0.5, 0.5, (4, 20)) 
-
-w_i_h = np.random.uniform(-0.5, 0.5, (20, 150))
-w_h_o = np.random.uniform(-0.5, 0.5, (4, 20)) 
-
-b_i_h = np.zeros((20, 1)) 
-b_h_o = np.zeros((4, 1))
-
-# FIRST THE RAW SIGNAL
-
-# THEN THE Z-SCORE NORMALIZED SIGNAL
-
-# THEN THE MIN-MAX NORMALIZED SIGNAL
 
 # shuffle the data and the target arrays
 index = np.arange(data.shape[0])
@@ -179,119 +236,40 @@ train_target = target[:int(0.8 * len(target)), :, :]
 test_data = data[int(0.8 * len(data)):, :, :]
 test_target = target[int(0.8 * len(target)):, :, :]
 
-#%% Network training
-# set th training parameters
-learn_rate = 0.01  
-nr_correct = 0
-epochs = 30
+#%% RAW
 
-for epoch in range(epochs):
+if train == "raw" or train == "all":
+    print("Training with raw data")
 
-     #innerloop
-    for v, l in zip(train_data, train_target):
+    # TRAINING
+    [w_i_h, b_i_h, w_h_o, b_h_o] = train_network(epochs=epochs, train_data=train_data, train_target=train_target, learn_rate=learn_rate)
 
-        # transpose the input vector
-        v = v.T
-        l = l.T
+    # TESTING
+    test_results = test_network(test_data=test_data, test_target=test_target, w_i_h=w_i_h, b_i_h=b_i_h, w_h_o=w_h_o, b_h_o=b_h_o)
 
-        # forward prop. input -> hidden
-        # @ means matrix multiplication
-        h_pre = b_i_h + w_i_h @ v
+    # save the weights
+    np.savez("weights_raw.npz", w_i_h=w_i_h, b_i_h=b_i_h, w_h_o=w_h_o, b_h_o=b_h_o)
+if train == "z-score" or train == "all":
+    print("Training with z-score normalized data")
 
-        # sigmoid activation function
-        h = 1 / (1 + np.exp(-h_pre))
+    # Z-SCORE
+    # TRAINING
+    [w_i_h, b_i_h, w_h_o, b_h_o] = train_network(epochs=epochs, train_data=data_norm_Z, train_target=train_target, learn_rate=learn_rate)
 
-        # forward prop. hidden -> output
-        o_pre = b_h_o + w_h_o @ h
-        o = 1 / (1 + np.exp(-o_pre))
+    # TESTING
+    test_results = test_network(test_data=data_norm_Z, test_target=test_target, w_i_h=w_i_h, b_i_h=b_i_h, w_h_o=w_h_o, b_h_o=b_h_o)
 
-        # Cost error calculation
-        e = 1/ len(0 * np.sum((o-l) ** 2, axis=0))
-
-        # if the neruron with the highest output is the same as the label, then it is correct and we add 1 to the counter
-        nr_correct += int(np.argmax(o) == np.argmax(l))
-
-        # backprop. output -> hidden (cost function derivative)
-        delta_o = o - l
-        w_h_o +=  - learn_rate * delta_o @ h.T
-        b_h_o += - learn_rate * delta_o
-
-        # backprop. hidden -> input (activation functino derivative)
-        delta_h = (w_h_o.T @ delta_o) * h * (1 - h)
-        w_i_h += - learn_rate * delta_h @ v.T
-        b_i_h += - learn_rate * delta_h
-
-        
-    print(f'Epoch: {epoch+1}/{epochs}, Accuracy: {nr_correct/len(train_data)*100}%')
-    nr_correct = 0
-
-#%%
-# test the network
-nr_correct = 0
-for v, l in zip(test_data, test_target):
+    # save the weights
+    np.savez("weights_z-score.npz", w_i_h=w_i_h, b_i_h=b_i_h, w_h_o=w_h_o, b_h_o=b_h_o)
+if train == "min-max" or train == "all":
+    print("Training with min-max normalized data")
     
-        # transpose the input vector
-        v = v.T
-        l = l.T
-    
-        # forward prop. input -> hidden
-        h_pre = b_i_h + w_i_h @ v
-    
-        # sigmoid activation function
-        h = 1 / (1 + np.exp(-h_pre))
-    
-        # forward prop. hidden -> output
-        o_pre = b_h_o + w_h_o @ h
-        o = 1 / (1 + np.exp(-o_pre))
-    
-        # if the neruron with the highest output is the same as the label, then it is correct and we add 1 to the counter
-        nr_correct += int(np.argmax(o) == np.argmax(l))
+    # MIN-MAX
+    # TRAINING
+    [w_i_h, b_i_h, w_h_o, b_h_o] = train_network(epochs=epochs, train_data=data_norm_M, train_target=train_target, learn_rate=learn_rate)
 
-print(nr_correct)
-print("Accuracy: ", nr_correct / len(test_data))
+    # TESTING
+    test_results = test_network(test_data=data_norm_M, test_target=test_target, w_i_h=w_i_h, b_i_h=b_i_h, w_h_o=w_h_o, b_h_o=b_h_o)
 
-# Save the weights
-#np.savez('weights.npz', w_i_h=w_i_h, w_h_o=w_h_o, b_i_h=b_i_h, b_h_o=b_h_o)
-#np.savez('min_max.npz', min_data=min_data, max_data=max_data)
-#%%
-
-# load the weights
-weights = np.load('weights.npz')
-
-w_i_h = weights['w_i_h']
-w_h_o = weights['w_h_o']
-b_i_h = weights['b_i_h']
-b_h_o = weights['b_h_o']
-
-
-# select a random index
-index = random.randint(0, len(test_data))
-
-# plot the data corresponding to the index
-plt.plot(test_data[index].T)
-
-# ylim between -2 and 2
-plt.ylim(-2, 2)
-
-#showcase one forward pass
-v = test_data[index].T
-
-# print the shape of v
-#print(v.shape)
-
-l = test_target[index].T
-
-# forward prop. input -> hidden
-h_pre = b_i_h + w_i_h @ v
-
-# sigmoid activation function
-h = 1 / (1 + np.exp(-h_pre))
-
-# forward prop. hidden -> output
-o_pre = b_h_o + w_h_o @ h
-o = 1 / (1 + np.exp(-o_pre))
-print("o: ")
-print(o)
-
-print("Predicted: ", np.argmax(o))
-print("Label: ", np.argmax(l))
+    # save the weights
+    np.savez("weights_min-max.npz", w_i_h=w_i_h, b_i_h=b_i_h, w_h_o=w_h_o, b_h_o=b_h_o)
