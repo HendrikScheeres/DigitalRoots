@@ -15,9 +15,6 @@ style.use('fivethirtyeight')
 # Initialize all variables
 ErrorCounter = 0
 
-# set the voltage array to global
-Voltage3 = []
-
 # List the serial ports:
 ports = serial.tools.list_ports.comports()
 serialInst = serial.Serial()

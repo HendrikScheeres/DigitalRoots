@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 from capacitiveSensor import serialEvent, Voltage3, Time3, test_connection, plot_data
 
-data_dir = 'data/'
+data_dir = 'Data/'
 save_seperately = False
 
 def main():
@@ -67,10 +67,10 @@ def main():
 
         # if i press 's' on the keyboard, save the data array and target array    
         if keyboard.is_pressed('s'):
+
+            # save the data in the Data folder
             print("saving data")
-            foldername="Data/"
-            filename="data"
-            np.savez(foldername+filename, data=data_array, target=target_array)
+            np.savez(data_dir + "data", data=data_array, target=target_array)
             print("saved data")
             print("Data was saved! Press q to quit")
 
