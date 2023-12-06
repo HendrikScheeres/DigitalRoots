@@ -30,8 +30,8 @@ def transformer(v, w_i_h, w_h_o, b_i_h, b_h_o):
     v = v[:150]
     v = v.T
 
-    print("this is what v looks like:")
-    print(v.shape)
+    #print("this is what v looks like:")
+    #print(v.shape)
     # reshape the vector to be a column vector
     v = v.reshape(-1, 1)
     # assert that the vector is (150, 1)
@@ -48,9 +48,9 @@ def transformer(v, w_i_h, w_h_o, b_i_h, b_h_o):
     o = 1 / (1 + np.exp(-o_pre))
 
 
-    print("o: ")
-    print(o)
+    #print("o: ")
+    #print(o)
 
-    print("Predicted: ", np.argmax(o))
+    #print("Predicted: ", np.argmax(o))
     
-    return np.argmax(o)
+    return o
