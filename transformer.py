@@ -1,8 +1,9 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import style
 import random
 import os
+import numpy as np
+from matplotlib import style
+import matplotlib.pyplot as plt
+
 style.use('fivethirtyeight')
 
 

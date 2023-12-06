@@ -164,6 +164,3 @@ def send_data(ip, port , variable):
         s.connect((ip, port))
         s.sendall(variable.encode())
 
-
-    
-#%%
