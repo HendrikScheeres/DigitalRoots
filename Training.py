@@ -1,51 +1,58 @@
-#%%
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import style
-import random
+"""
+TRAINING SCRIPT
+This script is used to train the neural network.
+The neural network is saved in the weights.npz file.
+The weights are loaded in the transformer.py script.
+The transformer.py script is used to transform the input data into the output data.
+The output data is a one-hot encoded vector.
+The one-hot encoded vector is converted to a class label this is send to the receiver
+"""
+
+#%% IMPORT
 import os
+import random
+import numpy as np
+from matplotlib import style
+import matplotlib.pyplot as plt
 style.use('fivethirtyeight')
 
-#%%
-
-# load the array
-datafile = np.load("Old_data/19-11-23/data.npz")
+#%% LOAD
+# Choose the array to load
+folder = "Data/"
+datafile = np.load(os.path.join(folder, "data.npz"))
 print(datafile.files)
 
-#%% 
+#%% INSPECTION
 
 data = datafile["data"]
 target = datafile['target']
 
 # get the size of data
-print(data)
+print("Current size of the data")
 print(data.shape)
 print(target.shape)
 
-# plot a sample of the data array
-print(data[0, 0, :])
-print(target[0, 0, :])
-
-#%%
-# from the target array find the index of the first element corresponding to [0,0,0,0]
+# find the first target index that corresponds to [0,0,0,0]
+# cut the data from there onwards
 index = np.where(np.all(target[:,0,:] == [0, 0, 0, 0], axis=1))[0][0]
-print(index)
 
-# plot the data corresponding to the index
-plt.plot(data[index -1, 0, :])
-
-# set the axis from 0 to 400
-plt.ylim(50, 350)
-
-#%%
 # cut of the data from the index onwards
 data = data[:index, :, :]
 target = target[:index, :, :]
+
+print("New size of the data")
 print(data.shape)
 print(target.shape)
 
 #%%
-#Plot the average signal of each condition
+
+r_i = random.randint(0, len(data))
+
+# plot the first sample of the data array with the target as title
+plt.plot(data[r_i, 0, :])
+plt.title("Random: " + str(target[r_i, 0, :]))
+
+#%% Plot the average signal of each condition
 
 # Get the index per conditons
 index_1 = np.where(np.all(target[:,0,:] == [1, 0, 0, 0], axis=1))
@@ -70,8 +77,7 @@ data_4 = data[index_4, 0, :]
 data_4 = np.squeeze(data_4)
 print(len(index_4[0]))
 
-
-#%% Mean
+#%% Mean and standard deviation
 mean_1 = np.mean(data_1, axis=0)
 len(np.mean(data_1, axis=0))
 
@@ -97,6 +103,7 @@ len(np.std(data_3, axis=0))
 std_4 = np.std(data_4, axis=0)
 len(np.std(data_4, axis=0))
 
+#%% Complicated plot
 # make 4 different plots for each condition, plot the mean as a thick line and the standard deviation shaded
 plt.figure()
 plt.plot(mean_1, linewidth=3)
@@ -123,57 +130,61 @@ plt.ylim(100, 400)
 plt.legend(['1', '2', '3', '4'])
 # fixe their colours
 
+#%% Normalizations
 
-#%% 
-
-# plot a sample of the data
+# Before scale plot
 plt.plot(data[0, 0, :])
+plt.title("No scaling")
 
-# normalize the data 
-# data_norm = (data - np.mean(data)) / np.std(data)
+# Z-score normalization
+data_norm_Z = (data - np.mean(data)) / np.std(data)
 
-# apply min-max normalization
-data_norm = (data - np.min(data)) / (np.max(data) - np.min(data))
+# Min-max normalization
+data_norm_M = (data - np.min(data)) / (np.max(data) - np.min(data))
 
-min_data = np.min(data)
-max_data = np.max(data)
-# new figure
-plt.figure()
+# After scale plot
+plt.plot(data_norm_Z[0, 0, :])
+plt.title("Z-score scaling")
 
-# plot a sample of the normalized data array
-plt.plot(data_norm[0, 0, :])
+plt.plot(data_norm_M[0, 0, :])
+plt.title("min-max scaling")
 
-#%%
-data = data_norm
+#%% PREPARE FOR TRAINGING
+
+# initialize the weights
+w_i_h = np.random.uniform(-0.5, 0.5, (20, 150)) 
+w_h_o = np.random.uniform(-0.5, 0.5, (4, 20)) 
+
+w_i_h = np.random.uniform(-0.5, 0.5, (20, 150))
+w_h_o = np.random.uniform(-0.5, 0.5, (4, 20)) 
+
+b_i_h = np.zeros((20, 1)) 
+b_h_o = np.zeros((4, 1))
+
+# FIRST THE RAW SIGNAL
+
+# THEN THE Z-SCORE NORMALIZED SIGNAL
+
+# THEN THE MIN-MAX NORMALIZED SIGNAL
 
 # shuffle the data and the target arrays
 index = np.arange(data.shape[0])
 np.random.shuffle(index)
 data = data[index, :, :]
 target = target[index, :, :]
-print(data.shape)
-print(target.shape)
 
-#%% split the data into training and testing
+# split the data into training and testing
 train_data = data[:int(0.8 * len(data)), :, :]
 train_target = target[:int(0.8 * len(target)), :, :]
 test_data = data[int(0.8 * len(data)):, :, :]
 test_target = target[int(0.8 * len(target)):, :, :]
 
-#%%
-w_i_h = np.random.uniform(-0.5, 0.5, (20, 150)) # specify dtype
-w_h_o = np.random.uniform(-0.5, 0.5, (4, 20)) # specify dtype
-
-w_i_h = np.random.uniform(-0.5, 0.5, (20, 150))# specify dtype
-w_h_o = np.random.uniform(-0.5, 0.5, (4, 20)) # specify dtype
-
-b_i_h = np.zeros((20, 1)) # specify dtype
-b_h_o = np.zeros((4, 1)) # specify dtype
-
+#%% Network training
+# set th training parameters
 learn_rate = 0.01  
 nr_correct = 0
 epochs = 30
-#%%
+
 for epoch in range(epochs):
 
      #innerloop
@@ -240,8 +251,8 @@ print(nr_correct)
 print("Accuracy: ", nr_correct / len(test_data))
 
 # Save the weights
-np.savez('weights.npz', w_i_h=w_i_h, w_h_o=w_h_o, b_i_h=b_i_h, b_h_o=b_h_o)
-np.savez('min_max.npz', min_data=min_data, max_data=max_data)
+#np.savez('weights.npz', w_i_h=w_i_h, w_h_o=w_h_o, b_i_h=b_i_h, b_h_o=b_h_o)
+#np.savez('min_max.npz', min_data=min_data, max_data=max_data)
 #%%
 
 # load the weights
@@ -266,7 +277,7 @@ plt.ylim(-2, 2)
 v = test_data[index].T
 
 # print the shape of v
-print(v.shape)
+#print(v.shape)
 
 l = test_target[index].T
 
