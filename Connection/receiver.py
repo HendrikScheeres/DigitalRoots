@@ -47,15 +47,15 @@ while True:
         # Perform action for message 1
         arduino_serial.write(b'1')
 
-        # wait untill you receive "done" back from the arduino
+        # wait untill you receive "Done" back from the arduino
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
             print(arduino_data)
-            if arduino_data == "done":
+            if arduino_data == "one":
 
                 # send a reply to the server that 1 was received and action was performed
-                client_socket.send("done".encode())
-                print("Arduino done")
+                client_socket.send("Done".encode())
+                print("Arduino Done")
                 break
 
             if keyboard.is_pressed == 'q':
@@ -71,10 +71,10 @@ while True:
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
             print(arduino_data)
-            if arduino_data == "done":
+            if arduino_data == "Done":
 
                 # send a reply to the server that 1 was received and action was performed
-                client_socket.send("done".encode())
+                client_socket.send("Done".encode())
                 print("Arduino done")
                 break
             if keyboard.is_pressed == 'q':
@@ -88,10 +88,10 @@ while True:
          # wait untill you receive "done" back from the arduino
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
-            if arduino_data == "done":
+            if arduino_data == "Done":
 
                 # send a reply to the server that 1 was received and action was performed
-                client_socket.send("done".encode())
+                client_socket.send("Done".encode())
                 break
             if keyboard.is_pressed == 'q':
                 break
@@ -101,13 +101,13 @@ while True:
         # Perform action for message 4
         arduino_serial.write(b'4')
 
-        # wait untill you receive "done" back from the arduino
+        # wait untill you receive "Done" back from the arduino
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
             if arduino_data == "done":
 
                 # send a reply to the server that 1 was received and action was performed
-                client_socket.send("done".encode())
+                client_socket.send("Done".encode())
                 break
             if keyboard.is_pressed == 'q':
                 break
