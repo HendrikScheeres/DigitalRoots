@@ -50,10 +50,12 @@ while True:
         # wait untill you receive "done" back from the arduino
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
+            print(arduino_data)
             if arduino_data == "done":
 
                 # send a reply to the server that 1 was received and action was performed
                 client_socket.send("done".encode())
+                print("Arduino done")
                 break
         
 
@@ -65,10 +67,12 @@ while True:
         # wait untill you receive "done" back from the arduino
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
+            print(arduino_data)
             if arduino_data == "done":
 
                 # send a reply to the server that 1 was received and action was performed
                 client_socket.send("done".encode())
+                print("Arduino done")
                 break
 
     elif data == '3':
