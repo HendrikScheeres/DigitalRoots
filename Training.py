@@ -48,8 +48,7 @@ def train_network(epochs, train_data, train_target, learn_rate):
             l = l.T
             print(v.shape)
             print(l.shape)
-
-            break
+            
             # Forward propagation
             h_pre = b_i_h + w_i_h @ v
             h = 1 / (1 + np.exp(-h_pre))

@@ -59,7 +59,7 @@ def main():
 
     # get the max and min voltage
     max_voltage = 0
-    min_voltage = 500
+    min_voltage = 121
 
     # print the max and min of Voltage3
     while (time.time() - start_time) < 10:
@@ -80,14 +80,14 @@ def main():
             print("touch the sensor")
             time.sleep(0.01)
 
-    print("max voltage: ", max_voltage)
-    print("min voltage: ", min_voltage)
     print("Done with scaling")
+    print("min voltage: ", min_voltage)
+    print("max voltage: ", max_voltage)
 
     # Import the scaling parameters from the training (Weights/scaling_values.npz)
     # load the scaling values
     scaling_values = np.load('weights/scaling_values.npz')
-    print("scaling values in training")
+    print("Scaling values during in training")
     print("min voltage: ", scaling_values["min"])
     print("max voltage: ", scaling_values["max"])
 
@@ -103,6 +103,9 @@ def main():
     output_sum = np.zeros([4, 1])
     sample_counter = 0 
     sample_threshold = 30000 
+
+    # plot the data once as a check
+    plot_data()
 
     # start the timer
     while True:
@@ -149,14 +152,15 @@ def main():
                     output_sum = np.zeros([4, 1])
 
                     # go into rest mode
-                    if np.argmax(output_average) != 0:
+                    if class_label != "0":
 
                         # send the class label
+                        print("going to act!")
+                        print("I'm performing " + str(np.argmax(output_average)))
                         send_data(client_socket, class_label)
-
+                        
                         plantStatus = "Resting"
-
-                        print("going into rest mode")
+                        print("Done acting, going into rest mode")
 
             #KEYPRESSES
             # if i press 'p' on the keyboard, plot the data
@@ -195,28 +199,15 @@ def main():
         elif plantStatus == "Resting":
 
             # wait for 4 seconds
-            time.sleep(15)
+            time.sleep(4)
 
             # if i press 'q' on the keyboard, quit the program
             if keyboard.is_pressed('q'):
                 print("quitting")
                 break
 
-            print("plant is set to listening again")
-            plantStatus = "Listening"
-
-            # # listen untill you receive data back from the client
-            # while True:
-            #     # receive the data
-            #     data = client_socket.recv(1024)
-            #     data = data.decode("utf-8")
-
-            #     # if the data is not empty, print it and break the loop
-            #     if data:
-            #         print(data)
-            #         print("It is now listening again")
-            #         plantStatus = "Listening"
-            #         break        
+            print("plant is ready to listening again")
+            plantStatus = "Listening"    
                     
                 
             

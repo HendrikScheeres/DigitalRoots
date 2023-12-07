@@ -14,13 +14,13 @@ void loop() {
     char receivedChar = Serial.read();
     
     if (receivedChar == '1') {
-      mellowActivation();
+      alarmActivation();
       Serial.println("0");
     } else if (receivedChar == '2') {
       chirpyActivation();
       Serial.println("0");
     } else if (receivedChar == '3') {
-      alarmActivation();
+      mellowActivation();
       Serial.println("0");
     }
   }
@@ -28,64 +28,48 @@ void loop() {
 
 void mellowActivation() {
   for (int i = 0; i < 3; i++) {
-    tone(buzzer1Pin, 150, 500);
-    delay(600);
+    analogWrite(buzzer1Pin, 150); // Vary duty cycle for mellow sound
+    analogWrite(buzzer2Pin, 100);
+    analogWrite(buzzer3Pin, 200);
+    delay(300);
+    analogWrite(buzzer1Pin, 0); // Turn off the buzzers
+    analogWrite(buzzer2Pin, 0);
+    analogWrite(buzzer3Pin, 0);
+    delay(300);
   }
-  noTone(buzzer1Pin);
   delay(500);
 
-  for (int i = 0; i < 2; i++) {
-    tone(buzzer2Pin, 200, 600);
-    delay(700);
-  }
-  noTone(buzzer2Pin);
-  delay(500);
-
-  tone(buzzer3Pin, 250, 800);
-  delay(1000);
-  noTone(buzzer3Pin);
+  // More elaborate mellowActivation pattern here...
 }
 
 void chirpyActivation() {
   for (int i = 0; i < 5; i++) {
-    tone(buzzer1Pin, 1000, 100);
-    delay(150);
+    analogWrite(buzzer1Pin, 200); // Vary duty cycle for chirpy sound
+    analogWrite(buzzer2Pin, 180);
+    analogWrite(buzzer3Pin, 220);
+    delay(100);
+    analogWrite(buzzer1Pin, 0); // Turn off the buzzers
+    analogWrite(buzzer2Pin, 0);
+    analogWrite(buzzer3Pin, 0);
+    delay(100);
   }
-  noTone(buzzer1Pin);
   delay(500);
 
-  for (int i = 0; i < 8; i++) {
-    tone(buzzer2Pin, 1200, 50);
-    delay(70);
-  }
-  noTone(buzzer2Pin);
-  delay(500);
-
-  for (int i = 0; i < 10; i++) {
-    tone(buzzer3Pin, 1500, 30);
-    delay(40);
-  }
-  noTone(buzzer3Pin);
+  // More elaborate chirpyActivation pattern here...
 }
 
 void alarmActivation() {
   for (int i = 0; i < 10; i++) {
-    tone(buzzer1Pin, 2000, 200);
-    delay(250);
+    analogWrite(buzzer1Pin, 255); // Vary duty cycle for alarm sound
+    analogWrite(buzzer2Pin, 255);
+    analogWrite(buzzer3Pin, 255);
+    delay(70);
+    analogWrite(buzzer1Pin, 0); // Turn off the buzzers
+    analogWrite(buzzer2Pin, 0);
+    analogWrite(buzzer3Pin, 0);
+    delay(70);
   }
-  noTone(buzzer1Pin);
   delay(500);
 
-  for (int i = 0; i < 15; i++) {
-    tone(buzzer2Pin, 1800, 100);
-    delay(120);
-  }
-  noTone(buzzer2Pin);
-  delay(500);
-
-  for (int i = 0; i < 20; i++) {
-    tone(buzzer3Pin, 2200, 50);
-    delay(60);
-  }
-  noTone(buzzer3Pin);
+  // More elaborate alarmActivation pattern here...
 }

@@ -34,40 +34,18 @@ def set_connection():
     return client_socket, client_address
 
 
-
 # Send data function that uses client_socket and client_address and a message
 def send_data(client_socket, message):
     # Send a message to the client
     client_socket.send(message.encode())
 
-    # Receive data from the client
-    data = client_socket.recv(1024).decode()
-    if not data:
-        return False
-
-    print(f"Received from client: {data}")
-
-    # if data equals q close the connection
-    if data == 'q':
-        print("Closing connection from receiver end.")
-        return False
-
-    return True
-
-# listen for incoming data
-def listen_data(client_socket):
-    # Receive data from the client
-    data = client_socket.recv(1024).decode()
-    if not data:
-        return False
-
-    print(f"Received from client: {data}")
-
-    # if data equals q close the connection
-    if data == 'q':
-        print("Closing connection from receiver end.")
-        return False
-
-    return True
+    # wait untill the client sends "0" back
+    while True:
+        data = client_socket.recv(1024).decode()
+        print(data)
+        if data == "0":
+            print("Action performed")
+            break
+        print("Got out of this loop")
 
 # %%
