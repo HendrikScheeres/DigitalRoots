@@ -50,11 +50,11 @@ while True:
         # wait untill you receive "Done" back from the arduino
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
-            print(arduino_data)
+            #print(arduino_data)
             if arduino_data == "one":
 
                 # send a reply to the server that 1 was received and action was performed
-                client_socket.send("Done".encode())
+                client_socket.send("0".encode())
                 print("Arduino Done")
                 break
 
@@ -71,10 +71,10 @@ while True:
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
             print(arduino_data)
-            if arduino_data == "Done":
+            if arduino_data == "0":
 
                 # send a reply to the server that 1 was received and action was performed
-                client_socket.send("Done".encode())
+                client_socket.send("0".encode())
                 print("Arduino done")
                 break
             if keyboard.is_pressed == 'q':
@@ -88,10 +88,10 @@ while True:
          # wait untill you receive "done" back from the arduino
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
-            if arduino_data == "Done":
+            if arduino_data == "0":
 
                 # send a reply to the server that 1 was received and action was performed
-                client_socket.send("Done".encode())
+                client_socket.send("0".encode())
                 break
             if keyboard.is_pressed == 'q':
                 break
@@ -104,10 +104,10 @@ while True:
         # wait untill you receive "Done" back from the arduino
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
-            if arduino_data == "done":
+            if arduino_data == "0":
 
                 # send a reply to the server that 1 was received and action was performed
-                client_socket.send("Done".encode())
+                client_socket.send("0".encode())
                 break
             if keyboard.is_pressed == 'q':
                 break

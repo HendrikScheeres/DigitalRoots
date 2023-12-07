@@ -15,13 +15,13 @@ void loop() {
     
     if (receivedChar == '1') {
       mellowActivation();
-      Serial.println("Done");
+      Serial.println("0");
     } else if (receivedChar == '2') {
       chirpyActivation();
-      Serial.println("Done");
+      Serial.println("0");
     } else if (receivedChar == '3') {
       alarmActivation();
-      Serial.println("Done");
+      Serial.println("0");
     }
   }
 }
