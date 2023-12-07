@@ -57,6 +57,9 @@ while True:
                 client_socket.send("done".encode())
                 print("Arduino done")
                 break
+
+            if keyboard.is_pressed == 'q':
+                break
         
 
     elif data == '2':
@@ -74,6 +77,8 @@ while True:
                 client_socket.send("done".encode())
                 print("Arduino done")
                 break
+            if keyboard.is_pressed == 'q':
+                break
 
     elif data == '3':
         print("Message 3 received, performing action...")
@@ -88,6 +93,8 @@ while True:
                 # send a reply to the server that 1 was received and action was performed
                 client_socket.send("done".encode())
                 break
+            if keyboard.is_pressed == 'q':
+                break
 
     elif data == '4':
         print("Message 4 received, performing action...")
@@ -101,6 +108,8 @@ while True:
 
                 # send a reply to the server that 1 was received and action was performed
                 client_socket.send("done".encode())
+                break
+            if keyboard.is_pressed == 'q':
                 break
 
     elif data == 'q':
