@@ -53,6 +53,8 @@ while True:
             if data == "done":
                 print("Action performed")
                 break
+            if keyboard.is_pressed == 'q':
+                break
 
     # Receive data from the client
     data = client_socket.recv(1024).decode()
