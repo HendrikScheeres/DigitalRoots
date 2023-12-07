@@ -47,6 +47,13 @@ while True:
     if key_pressed in ['1', '2', '3', '4']:
         client_socket.send(key_pressed.encode())
 
+        # wait untill the client sends "done" back
+        while True:
+            data = client_socket.recv(1024).decode()
+            if data == "done":
+                print("Action performed")
+                break
+
     # Receive data from the client
     data = client_socket.recv(1024).decode()
     if not data:

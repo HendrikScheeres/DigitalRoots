@@ -47,32 +47,57 @@ while True:
         # Perform action for message 1
         arduino_serial.write(b'1')
 
-        # send a reply to the server that 1 was received and action was performed
-        client_socket.send('1 was received'.encode())
+        # wait untill you receive "done" back from the arduino
+        while True:
+            arduino_data = arduino_serial.readline().decode().strip()
+            if arduino_data == "done":
+
+                # send a reply to the server that 1 was received and action was performed
+                client_socket.send("done".encode())
+                break
+        
 
     elif data == '2':
         print("Message 2 received, performing action...")
         # Perform action for message 2
         arduino_serial.write(b'2')
 
-        # send a reply to the server that 2 was received and action was performed
-        client_socket.send('2 was received'.encode())
+        # wait untill you receive "done" back from the arduino
+        while True:
+            arduino_data = arduino_serial.readline().decode().strip()
+            if arduino_data == "done":
+
+                # send a reply to the server that 1 was received and action was performed
+                client_socket.send("done".encode())
+                break
 
     elif data == '3':
         print("Message 3 received, performing action...")
         # Perform action for message 3
         arduino_serial.write(b'3')
 
-        # send a reply to the server that 3 was received and action was performed
-        client_socket.send('3 was received'.encode())
+         # wait untill you receive "done" back from the arduino
+        while True:
+            arduino_data = arduino_serial.readline().decode().strip()
+            if arduino_data == "done":
+
+                # send a reply to the server that 1 was received and action was performed
+                client_socket.send("done".encode())
+                break
 
     elif data == '4':
         print("Message 4 received, performing action...")
         # Perform action for message 4
         arduino_serial.write(b'4')
 
-        # send a reply to the server that 4 was received and action was performed
-        client_socket.send('4 was received'.encode())
+        # wait untill you receive "done" back from the arduino
+        while True:
+            arduino_data = arduino_serial.readline().decode().strip()
+            if arduino_data == "done":
+
+                # send a reply to the server that 1 was received and action was performed
+                client_socket.send("done".encode())
+                break
 
     elif data == 'q':
 
@@ -81,15 +106,7 @@ while True:
         
         # Close the connection
         client_socket.close()
-        break
-
-    # check for messages from arduino
-    arduino_data = arduino_serial.readline().decode().strip()
-    if arduino_data:
-        print(f"Received from Arduino: {arduino_data}")
-        client_socket.send(arduino_data.encode())
-
-  
+        break  
 
 # Close the connection
 client_socket.close()
