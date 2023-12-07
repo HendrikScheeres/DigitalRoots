@@ -96,22 +96,6 @@ while True:
             if keyboard.is_pressed == 'q':
                 break
 
-    elif data == '4':
-        print("Message 4 received, performing action...")
-        # Perform action for message 4
-        arduino_serial.write(b'4')
-
-        # wait untill you receive "Done" back from the arduino
-        while True:
-            arduino_data = arduino_serial.readline().decode().strip()
-            if arduino_data == "0":
-
-                # send a reply to the server that 1 was received and action was performed
-                client_socket.send("0".encode())
-                break
-            if keyboard.is_pressed == 'q':
-                break
-
     elif data == 'q':
 
         # send a message to the server that the client is closing the connection

@@ -44,29 +44,17 @@ while True:
         break
 
     # Map keys to messages and send to the client
-    if key_pressed in ['1', '2', '3', '4']:
+    if key_pressed in ['1', '2', '3']:
         client_socket.send(key_pressed.encode())
 
         # wait untill the client sends "0" back
         while True:
             data = client_socket.recv(1024).decode()
+            print(data)
             if data == "0":
                 print("Action performed")
                 break
-            if keyboard.is_pressed == 'q':
-                break
-
-    # Receive data from the client
-    data = client_socket.recv(1024).decode()
-    if not data:
-        break
-
-    print(f"Received from client: {data}")
-
-    # if data equals q close the connection
-    if data == 'q':
-        print("Closing connection from receiver end.")
-        break
+        print("Got out of this loop")
 
 # Close the connection
 client_socket.close()
