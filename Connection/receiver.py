@@ -51,7 +51,7 @@ while True:
         while True:
             arduino_data = arduino_serial.readline().decode().strip()
             #print(arduino_data)
-            if arduino_data == "one":
+            if arduino_data == "0":
 
                 # send a reply to the server that 1 was received and action was performed
                 client_socket.send("0".encode())
