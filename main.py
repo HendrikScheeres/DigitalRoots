@@ -198,7 +198,7 @@ def main():
                 send_data(client_socket, "1")
 
                 plantStatus = "Resting"
-                print("Done acting, going into rest mode")1
+                print("Done acting, going into rest mode")
 
             # transform the input
             if keyboard.is_pressed('t'):
