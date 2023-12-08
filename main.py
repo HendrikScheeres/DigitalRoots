@@ -57,9 +57,19 @@ def main():
     start_time = time.time()
     print("scaling the signal, 10 seconds")
 
+    # Import the scaling parameters from the training (Weights/scaling_values.npz)
+    # load the scaling values
+    scaling_values = np.load('weights/scaling_values.npz')
+    print("Scaling values during in training")
+    print("min voltage: ", scaling_values["min"])
+    print("max voltage: ", scaling_values["max"])
+
     # get the max and min voltage
-    max_voltage = 0
-    min_voltage = 121
+    max_voltage = scaling_values["max"]
+    min_voltage = scaling_values["min"]
+    real_min = 200
+    real_max = 0
+
 
     # print the max and min of Voltage3
     while (time.time() - start_time) < 10:
@@ -75,6 +85,11 @@ def main():
             if temp_min < min_voltage:
                 min_voltage = temp_min
 
+            if temp_max > real_max:
+                real_max = temp_max
+            if temp_min < real_min:
+                real_min = temp_min
+
         # after 5 seconds print once that the user should touch the sensor
         if (time.time() - start_time) > 5 and (time.time() - start_time) < 5.02:
             print("touch the sensor")
@@ -84,12 +99,13 @@ def main():
     print("min voltage: ", min_voltage)
     print("max voltage: ", max_voltage)
 
-    # Import the scaling parameters from the training (Weights/scaling_values.npz)
-    # load the scaling values
-    scaling_values = np.load('weights/scaling_values.npz')
-    print("Scaling values during in training")
-    print("min voltage: ", scaling_values["min"])
-    print("max voltage: ", scaling_values["max"])
+    print("The real min and max")
+    print("min voltage: ", real_min)
+    print("max voltage: ", real_max)
+
+    # Changed it to the real min and max
+    min_voltage = real_min
+    max_voltage = real_max
 
     # Z-score normalization
     # while (time.time() - start_time) < 5:
@@ -143,6 +159,7 @@ def main():
                     class_label = str(class_label)
 
                     # send the class label
+                    print(output_average)
                     print(class_label)
 
                     # reset the sample counter
@@ -175,6 +192,13 @@ def main():
             if keyboard.is_pressed('r'):
                 print("resting")
                 plantStatus = "Resting"
+
+            if keyboard.is_pressed('1'):
+                print("sending 1")
+                send_data(client_socket, "1")
+
+                plantStatus = "Resting"
+                print("Done acting, going into rest mode")1
 
             # transform the input
             if keyboard.is_pressed('t'):

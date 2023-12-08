@@ -211,7 +211,7 @@ plt.fill_between(np.arange(len(mean_4)), mean_4 - std_4, mean_4 + std_4, alpha=0
 plt.ylim(100, 400)
 
 #add a legend
-plt.legend(['1', '2', '3', '4'])
+plt.legend(['0', '1', '2', '3'])
 # fixe their colours
 
 #%% Normalizations
