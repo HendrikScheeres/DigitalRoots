@@ -3,3 +3,11 @@ Old_Data/
 Test/
 Weights/
 training copy.py
+WrittenReportText_Hendrik_Zhu.docx
+weights_min-max.npz
+weights_raw.npz
+weights_z-score.npz
+weights.npz
+scaling_values.npz
+min_max.npz
+raw-weights.npz

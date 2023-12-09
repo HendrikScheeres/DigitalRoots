@@ -18,7 +18,7 @@ style.use('fivethirtyeight')
 
 #%%
 # Presets
-train = "raw"
+train = "all"
 epochs = 30
 learn_rate = 0.01
 
@@ -41,13 +41,13 @@ def train_network(epochs, train_data, train_target, learn_rate):
         for v, l in zip(train_data, train_target):
             #v = v.reshape(-1, 1) # Reshape v to be a column vector
             #l = l.reshape(-1, 1)  # Reshape l to be a column vector
-            print(v.shape)
-            print(l.shape)
+            #print(v.shape)
+            #print(l.shape)
             # transpose the input vector
             v = v.T
             l = l.T
-            print(v.shape)
-            print(l.shape)
+            #print(v.shape)
+            #print(l.shape)
             
             # Forward propagation
             h_pre = b_i_h + w_i_h @ v
@@ -136,6 +136,15 @@ r_i = random.randint(0, len(data))
 plt.plot(data[r_i, 0, :])
 plt.title("Random: " + str(target[r_i, 0, :]))
 
+#%%
+# plot the first sample of the data array with the target as title
+plt.plot(data[0, 0, :])
+plt.title("Rest state ")
+
+# set y-axis from 0 to 500
+plt.ylim(0, 500)
+
+
 #%% Plot the average signal of each condition
 
 # Get the index per conditons
@@ -192,27 +201,50 @@ len(np.std(data_4, axis=0))
 plt.figure()
 plt.plot(mean_1, linewidth=3)
 plt.fill_between(np.arange(len(mean_1)), mean_1 - std_1, mean_1 + std_1, alpha=0.5)
-plt.ylim(100, 400)
+plt.ylim(0, 500)
 
 #plt.figure()
 plt.plot(mean_2, linewidth=3)
 plt.fill_between(np.arange(len(mean_2)), mean_2 - std_2, mean_2 + std_2, alpha=0.5)
-plt.ylim(100, 400)
+plt.ylim(0, 500)
 
 #plt.figure()
 plt.plot(mean_3, linewidth=3)
 plt.fill_between(np.arange(len(mean_3)), mean_3 - std_3, mean_3 + std_3, alpha=0.5)
-plt.ylim(100, 400)
+plt.ylim(0, 500)
 
 #plt.figure()
 plt.plot(mean_4, linewidth=3)
 plt.fill_between(np.arange(len(mean_4)), mean_4 - std_4, mean_4 + std_4, alpha=0.5)
 # set the y-axis between 100 400
-plt.ylim(100, 400)
+plt.ylim(0, 500)
 
 #add a legend
-plt.legend(['0', '1', '2', '3'])
-# fixe their colours
+plt.legend(["Rest", "", "Gesture 1", "", "Gesture 2", "", "Gesture 3", ""])
+
+# make the whole plot a bit bigger
+plt.rcParams["figure.figsize"] = (15, 25)
+
+# make the x-axis got to 150
+plt.xlim(0, 150)
+
+# add a title
+plt.title("Mean signal per gesture")
+
+# add a x-axis label
+plt.xlabel("Readnumber")
+plt.ylabel("Amp")
+
+# print the mu symbol
+plt.text(0, 450, r'$\mu$')
+
+# print the mean and sd per gesture in a scientific way
+print("Mean and standard deviation per gesture")
+print("Rest: ", np.mean(data_1), np.std(data_1))
+print("Gesture 1: ", np.mean(data_2), "sd " ,np.std(data_2))
+print("Gesture 2: ", np.mean(data_3), "sd " ,np.std(data_3))
+print("Gesture 3: ", np.mean(data_4), "sd " ,np.std(data_4))
+
 
 #%% Normalizations
 
