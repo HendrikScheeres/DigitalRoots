@@ -4,13 +4,6 @@ import serial
 import socket
 import time
 
-def get_key():
-    while True:
-        key = keyboard.read_event()
-        if key.event_type == keyboard.KEY_DOWN:
-            return key.name
-
-
 # Create a socket object
 client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -39,8 +32,6 @@ arduino_serial = serial.Serial('COM3', 9600, timeout=1)
 time.sleep(2)
 
 while True:
-
-    key_pressed = get_key()
 
     # Receive data from the server
     data = client_socket.recv(1024).decode()
