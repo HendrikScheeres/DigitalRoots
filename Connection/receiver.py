@@ -114,61 +114,6 @@ while True:
         client_socket.close()
         break 
 
-    if keyboard.is_pressed == '1':
-        print("keypress 1 received, performing action...")
-        # Perform action for message 2
-        arduino_serial.write(b'1')
-
-        # wait untill you receive "done" back from the arduino
-        while True:
-            arduino_data = arduino_serial.readline().decode().strip()
-            print(arduino_data)
-            if arduino_data == "0":
-
-                # send a reply to the server that 1 was received and action was performed
-                client_socket.send("0".encode())
-                print("Arduino done")
-                break
-            if keyboard.is_pressed == 'q':
-                break
-    
-    if keyboard.is_pressed == '2':
-        print("keypress 2 received, performing action...")
-        # Perform action for message 2
-        arduino_serial.write(b'2')
-
-        # wait untill you receive "done" back from the arduino
-        while True:
-            arduino_data = arduino_serial.readline().decode().strip()
-            print(arduino_data)
-            if arduino_data == "0":
-
-                # send a reply to the server that 1 was received and action was performed
-                client_socket.send("0".encode())
-                print("Arduino done")
-                break
-            if keyboard.is_pressed == 'q':
-                break
-    
-    if keyboard.is_pressed == '3':
-        print("keypress 3 received, performing action...")
-        # Perform action for message 2
-        arduino_serial.write(b'3')
-
-        # wait untill you receive "done" back from the arduino
-        while True:
-            arduino_data = arduino_serial.readline().decode().strip()
-            print(arduino_data)
-            if arduino_data == "0":
-
-                # send a reply to the server that 1 was received and action was performed
-                client_socket.send("0".encode())
-                print("Arduino done")
-                break
-            if keyboard.is_pressed == 'q':
-                break
-
-
 
 
 # Close the connection
