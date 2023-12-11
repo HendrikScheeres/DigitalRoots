@@ -11,4 +11,5 @@ weights.npz
 scaling_values.npz
 min_max.npz
 raw-weights.npz
+__pychache__/
 WrittenReportText_Hendrik_Zhu.docx
