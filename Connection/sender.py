@@ -1,5 +1,5 @@
 #%%
-import socket
+import socket11231231123
 import keyboard
 
 def get_key():
